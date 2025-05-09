@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dns-checker
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: dns-checker }
+  template:
+    metadata:
+      labels: { app: dns-checker }
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: checker
+          image: ghcr.io/dnviti/dns-checker:latest
+          imagePullPolicy: Always
+          env:
+            - { name: DOMAIN_TO_CHECK,        value: "example.com" }
+            - { name: CHECK_INTERVAL_SECONDS, value: "1" }
+          resources:
+            requests: { cpu: 10m, memory: 64Mi }
+            limits:   { cpu: 50m, memory: 128Mi }
