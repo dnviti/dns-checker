@@ -31,7 +31,8 @@ logging.Formatter.converter = time.gmtime  # force UTC everywhere
 # ── Signal handling ────────────────────────────────────────────────────────────
 def _sig_term(signum: int, frame: FrameType | None) -> None:
     """Ignore SIGTERM; just log it so the pod keeps running."""
-    logging.warning("Received %s, ignoring per requirement.", signal.Signals(signum).name)
+    logging.warning("Received SIGTERM - exiting gracefully.")
+    sys.exit(0)
 
 def _sig_int(signum: int, frame: FrameType | None) -> None:
     """Gracefully exit on Ctrl-C / SIGINT."""
